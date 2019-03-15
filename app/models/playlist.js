@@ -16,7 +16,7 @@ const playlistSchema = new Schema({
       ref: 'Song'
     }
   ]
-});
+}, { versionKey: false });
 
 const Playlist = mongoose.model('Playlist', playlistSchema);
 
