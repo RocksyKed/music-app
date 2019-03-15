@@ -14,13 +14,7 @@ const signToken =
 const verifyToken =
   token =>
     verify(token, SECRET)
-      .then((accessToken, err) => {
-        if (err) {
-          return Promise.reject(new AuthError({ message: 'Token is invalid' }));
-        } else {
-          return accessToken
-        }
-      });
+      .catch(err => Promise.reject(new AuthError({ message: 'Token is invalid' })));
 
 module.exports = {
   signToken,

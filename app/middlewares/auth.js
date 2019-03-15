@@ -1,16 +1,21 @@
-const jwt = require('jsonwebtoken');
-
-const auth = require('../services/user');
+const authService = require('../services/auth');
+const AuthError = require('../errors/authError');
+const User = require('../models/user');
 
 const verifyUser = (req, res, next) => {
-  const token = (req.headers['Authorization'] || '').split(' ')[1];
+  const token = (req.headers['authorization'] || '').split(' ')[1];
 
   if (!token) {
-    res.status(401).send({ auth: false, message: 'No token provided' });
+    return Promise.reject(new AuthError({ message: 'No token provided' }));
+  } else {
+    return authService.verifyToken(token)
+      .then(({ id }) => User.findById(id).lean())
+      .then(user => {
+        req.user = user;
+        next();
+      })
+      .catch(next)
   }
-
 };
 
-module.exports = {
-  verifyUser
-};
+module.exports = verifyUser;
