@@ -2,12 +2,12 @@ const lodash = require('lodash');
 const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
-const ClientError = require('../errors/clientError');
+const AuthError = require('../errors/authError');
 const { signToken } = require('./auth');
 
 const SALT_ROUNDS = 10;
 
-const createUser = user => (
+const createUser = user =>
   bcrypt.hash(user.password, SALT_ROUNDS)
     .then(hashPassword => {
       const userObj = {
@@ -27,12 +27,17 @@ const createUser = user => (
     .then(([ user, accessToken]) => ({
       user,
       accessToken
-    }))
-);
+    }));
 
-const loginUser = ({ email, password }) => (
+const loginUser = ({ email, password }) =>
   User.findOne({ email }).select('+password').lean()
     .then(user => {
+      if (!user) {
+        return Promise.reject(
+          new AuthError({ message: 'Email or password is invalid' })
+        );
+      }
+
       const isPasswordTrueP = bcrypt.compare(password, user.password);
 
       return Promise.all([ user, isPasswordTrueP ])
@@ -40,7 +45,7 @@ const loginUser = ({ email, password }) => (
     .then(([ user, isPasswordTrue ]) => {
       if (!isPasswordTrue) {
         return Promise.reject(
-          new ClientError({ message: 'Email or password is invalid' })
+          new AuthError({ message: 'Email or password is invalid' })
         );
       } else {
         const userToSent = lodash.omit(user, ['password']);
@@ -51,8 +56,7 @@ const loginUser = ({ email, password }) => (
     .then(([user, accessToken]) => ({
       user,
       accessToken
-    }))
-);
+    }));
 
 module.exports = {
   createUser,

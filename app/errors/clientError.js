@@ -3,9 +3,9 @@ class ClientError extends Error {
     super(msg);
 
     this.details = details;
-    this.isCustomError = true;
     this.type = 'CLIENT_ERROR';
     this.status = 400;
+    this.isCustomError = true;
 
     Error.captureStackTrace(this, ClientError);
   }

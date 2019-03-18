@@ -6,7 +6,7 @@ const verifyUser = (req, res, next) => {
   const token = (req.headers['authorization'] || '').split(' ')[1];
 
   if (!token) {
-    return Promise.reject(new AuthError({ message: 'No token provided' }));
+    next(new AuthError({ message: 'No token provided' }));
   } else {
     return authService.verifyToken(token)
       .then(({ id }) => User.findById(id).lean())

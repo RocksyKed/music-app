@@ -1,4 +1,4 @@
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, _) => {
   if (err && err.isCustomError) {
     res.status(err.status || 400).json({
       message: err.details.message
