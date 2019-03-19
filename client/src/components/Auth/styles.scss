@@ -1,0 +1,23 @@
+.auth {
+  display: flex;
+
+  img {
+    width: 50%;
+    object-fit: cover;
+    height: 100vh;
+  }
+
+  &-container {
+    width: 50%;
+    background-color: #fcfcfc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & > * {
+      width: 80%;
+      min-width: 400px;
+      max-width: 600px;
+    }
+  }
+}

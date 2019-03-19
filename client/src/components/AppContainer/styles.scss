@@ -1,0 +1,14 @@
+.app-container {
+  display: flex;
+
+  &-sidebar {
+    display: flex;
+    width: 25%;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+  }
+}
