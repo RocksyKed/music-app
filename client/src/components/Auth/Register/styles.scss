@@ -1,0 +1,17 @@
+.register-card-container {
+  &-content {
+    &-form {
+      display: flex;
+      flex-direction: column;
+      width: 80%;
+      margin: 0 auto;
+
+      .register-card-link {
+        text-decoration: none;
+        color: #1a2327;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    }
+  }
+}

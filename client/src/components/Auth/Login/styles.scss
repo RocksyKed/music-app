@@ -1,18 +1,16 @@
-.card-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
+.login-card-container {
   &-content {
-    width: 80%;
-
     &-form {
       display: flex;
       flex-direction: column;
+      width: 80%;
+      margin: 0 auto;
 
-      &-button {
-        margin: 10px 0;
+      .login-card-link {
+        text-decoration: none;
+        color: #1a2327;
+        font-weight: 600;
+        cursor: pointer;
       }
     }
   }
