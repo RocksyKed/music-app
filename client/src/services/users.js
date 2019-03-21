@@ -1,65 +1,47 @@
-const currentUser = {
-  username: 'Alice',
-  email: 'rocksy.ked@gmail.com',
-  avatar: 'https://cdn3.iconfinder.com/data/icons/rcons-user-profession/32/student-girl-512.png',
-  genres: [
-    {
-      id: 1,
-      name: 'rock'
-    },
-    {
-      id: 2,
-      name: 'pop'
-    },
-    {
-      id: 3,
-      name: 'rap'
-    }
-  ],
-  playlists: [
-    {
-      id: 1,
-      genre: {
-        id: 2,
-        name: 'pop'
-      },
-      cover: 'https://99designs-blog.imgix.net/blog/wp-content/uploads/2017/12/Stargroves-album-cover.png?auto=format&q=60&fit=max&w=930',
-      songs: [
-        {
-          id: 1,
-          name: 'Song 1'
-        },
-        {
-          id: 2,
-          name: 'Song 2'
-        },
-        {
-          id: 3,
-          name: 'Song 3'
-        }
-      ]
-    },
-    {
-      id: 2,
-      genre: {
-        id: 1,
-        name: 'pop'
-      },
-      cover: 'https://99designs-blog.imgix.net/blog/wp-content/uploads/2017/12/Stargroves-album-cover.png?auto=format&q=60&fit=max&w=930',
-      songs: [
-        {
-          id: 1,
-          name: 'Song 1'
-        },
-        {
-          id: 2,
-          name: 'Song 2'
-        },
-        {
-          id: 3,
-          name: 'Song 3'
-        }
-      ]
-    }
-  ]
+import axios from 'axios';
+
+import { API_BASE_URL } from '../config';
+
+export const TOKEN_KEY = 'accessToken';
+
+export const getAccessToken = () =>
+  localStorage.getItem(TOKEN_KEY);
+
+export const setAccessToken = accessToken => {
+  localStorage.setItem(TOKEN_KEY, accessToken);
+
+  axios.defaults.headers.common['Authorization'] =
+    `Bearer ${accessToken}`;
 };
+
+export const hasAccessToken = () =>
+  !!getAccessToken();
+
+if (hasAccessToken()) {
+  axios.defaults.headers.common['Authorization'] =
+    `Bearer ${getAccessToken()}`;
+}
+
+export const login = userData =>
+  axios.post(`${API_BASE_URL}/login`, userData)
+    .then(({ data }) => {
+      setAccessToken(data.accessToken);
+
+      return data.user;
+    });
+
+export const register = userData =>
+  axios.post(`${API_BASE_URL}/users`, userData)
+    .then(({ data }) => {
+      setAccessToken(data.accessToken);
+
+      return data.user;
+    });
+
+export const logout = () => {
+  localStorage.removeItem(TOKEN_KEY);
+};
+
+export const getCurrentUser = () =>
+  axios.get(`${API_BASE_URL}/users/me`)
+    .then(({ data }) => data);

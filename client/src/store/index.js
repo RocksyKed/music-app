@@ -7,6 +7,8 @@ import {
 import { reducer as formReducer } from 'redux-form';
 import thunk from 'redux-thunk';
 
+import users from './modules/users';
+
 const composeEnhancers = (
   process.env.NODE_ENV !== 'production' &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -14,6 +16,7 @@ const composeEnhancers = (
   || compose;
 
 const rootReducer = combineReducers({
+  users,
   form: formReducer
 });
 

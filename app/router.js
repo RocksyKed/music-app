@@ -5,12 +5,8 @@ const authRequired = require('./middlewares/auth');
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.send('Works');
-});
-
+router.get('/users/me', authRequired, userController.getCurrentUser);
 router.post('/users', userController.registrateUser);
-
 router.post('/login', userController.login);
 
 module.exports = router;

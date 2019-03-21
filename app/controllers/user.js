@@ -12,7 +12,12 @@ const login = (req, res, onError) => {
     .catch(onError);
 };
 
+const getCurrentUser = (req, res) => {
+  res.json(req.user);
+};
+
 module.exports = {
   registrateUser,
-  login
+  login,
+  getCurrentUser
 };
