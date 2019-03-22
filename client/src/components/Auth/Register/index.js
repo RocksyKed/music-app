@@ -1,6 +1,7 @@
 import React from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -8,19 +9,15 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
-import lodash from 'lodash';
 
 import FieldRenderer from '../../FieldRenderer';
+import { register } from '../../../services/users';
+import { loggedIn } from '../../../store/modules/me';
+import { isEmailValid } from '../../../helpers';
 import muiStyles from './muiStyles';
 import './styles.scss';
 
-const Register = ({ handleSubmit, classes }) => {
-  const onSubmit = formData => {
-    const userData = lodash.omit(formData, 'confirmPassword');
-
-
-  };
-
+const Register = ({ handleSubmit, classes, submitting }) => {
   return (
     <Card className="register-card-container">
       <CardHeader
@@ -29,7 +26,7 @@ const Register = ({ handleSubmit, classes }) => {
       <CardContent className="register-card-container-content">
         <form
           className="register-card-container-content-form"
-          onSubmit={handleSubmit(onSubmit)}>
+          onSubmit={handleSubmit}>
           <Field
             name="email"
             label="Email"
@@ -65,7 +62,8 @@ const Register = ({ handleSubmit, classes }) => {
             type="submit"
             classes={{ root: classes.button }}
             color="secondary"
-            variant="contained">
+            variant="contained"
+            disabled={submitting}>
             Register
           </Button>
           <Typography
@@ -85,13 +83,10 @@ const Register = ({ handleSubmit, classes }) => {
   )
 };
 
-const EMAIL_REGEXP =
-  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-
 const validate = values => ({
   email: !values.email
     ? 'Required'
-    : !EMAIL_REGEXP.test(values.email)
+    : !isEmailValid(values.email)
       ? 'Email is invalid'
       : null,
   username: !values.username
@@ -107,7 +102,21 @@ const validate = values => ({
       : null
 });
 
+const mapDispatch = (dispatch, { history }) => ({
+  onSubmit: values =>
+    register(values)
+      .then(user => {
+        dispatch(loggedIn(user));
+        history.push('/');
+      })
+      .catch(console.error)
+});
+
 const enhance = compose(
+  connect(
+    null,
+    mapDispatch
+  ),
   reduxForm({
     form: 'register',
     validate

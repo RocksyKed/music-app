@@ -15,6 +15,7 @@ const Root = () => (
         <Router>
           <Switch>
             <Route path="/auth" component={Auth} />
+            <Route exact path="/" component={() => <div>Home</div>} />
           </Switch>
         </Router>
       </AppContainer>

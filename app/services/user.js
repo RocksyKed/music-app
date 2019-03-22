@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const AuthError = require('../errors/authError');
 const { signToken } = require('./auth');
+const ClientError = require('../errors/clientError');
 
 const SALT_ROUNDS = 10;
 
@@ -27,7 +28,11 @@ const createUser = user =>
     .then(([ user, accessToken]) => ({
       user,
       accessToken
-    }));
+    }))
+    .catch(err => {
+      if (err && err.code && err.code === 11000)
+      return Promise.reject(new ClientError({ message: 'User with this email already exist' }));
+    });
 
 const loginUser = ({ email, password }) =>
   User.findOne({ email }).select('+password').lean()
