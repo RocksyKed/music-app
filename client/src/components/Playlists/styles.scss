@@ -1,0 +1,29 @@
+.playlists-container {
+  padding: 0 20px;
+
+  &-header {
+    display: flex;
+    margin: 30px 0 20px 0;
+    justify-content: space-between;
+
+    &-search {
+      width: 300px;
+      display: flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background-color: #f7f6f6;
+
+      &-icon {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px 0;
+  }
+}

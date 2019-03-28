@@ -1,7 +1,6 @@
 const muiStyles = theme => ({
   input: {
-    color: theme.palette.primary.contrastText,
-    paddingBottom: 0,
+    color: theme.palette.primary.contrastText
   }
 });
 

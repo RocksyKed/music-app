@@ -1,31 +1,56 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import Header from './Header';
 import SideBar from './Sidebar';
+import { getMe } from '../../store/modules/me';
 
 import './styles.scss';
 
 class AppContainer extends Component {
+  componentDidMount() {
+    this.props.getMe();
+  }
 
   render() {
-    const { children } = this.props;
+    const {
+      children,
+      isLoggedIn,
+      isLoading
+    } = this.props;
 
-    return (
-      0
-        ? (
-          <div className="app-container">
-            <div className="app-container-sidebar">
-              <SideBar />
-            </div>
-            <div className="app-container-content">
-              <Header />
-              {children}
-            </div>
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+
+    return isLoggedIn
+      ? (
+        <div className="app-container">
+          <SideBar className="app-container-sidebar" />
+          <div className="app-container-content">
+            <Header />
+            {children}
           </div>
-        )
-        : children
-    )
+        </div>
+      )
+      : children;
   }
 }
 
-export default AppContainer;
+const mapState = state => ({
+  isLoading: state.me.isLoading,
+  isLoggedIn: state.me.isLoggedIn
+});
+
+const enhance =
+  compose(
+    withRouter,
+    connect(
+      mapState,
+      { getMe }
+    )
+  );
+
+export default enhance(AppContainer);

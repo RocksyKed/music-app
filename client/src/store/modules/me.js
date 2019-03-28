@@ -1,3 +1,5 @@
+import { getCurrentUser } from '../../services/users';
+
 const initialState = {
   data: null,
   isLoggedIn: false,
@@ -15,6 +17,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoggedIn: true,
+        isLoading: false,
         data: action.payload
       };
     case GET_CURRENT_PENDING:
@@ -26,6 +29,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
+        isLoggedIn: true,
         data: action.payload
       };
     case GET_CURRENT_REJECTED:
@@ -43,3 +47,18 @@ export const loggedIn = payload => ({
   payload
 });
 
+export const getMe = () => dispatch => {
+  dispatch({ type: GET_CURRENT_PENDING });
+
+  return getCurrentUser()
+    .then(user =>
+      dispatch({
+        type: GET_CURRENT_FULFILLED,
+        payload: user
+      })
+    )
+    .catch(err => {
+      dispatch({ type: GET_CURRENT_REJECTED });
+      console.error(err);
+    });
+};

@@ -2,13 +2,13 @@
   display: flex;
 
   &-sidebar {
-    display: flex;
-    width: 25%;
+    width: 20%;
+    min-width: 220px;
   }
 
   &-content {
     display: flex;
     flex-direction: column;
-    width: 75%;
+    width: 80%;
   }
 }

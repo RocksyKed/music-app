@@ -80,8 +80,8 @@ const mapDispatch = (dispatch, { history }) => ({
   onSubmit: values =>
     login(values)
       .then(user => {
-        dispatch(loggedIn(user));
         history.push('/');
+        dispatch(loggedIn(user));
       })
       .catch(console.error)
 });

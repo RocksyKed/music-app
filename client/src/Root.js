@@ -7,18 +7,20 @@ import store from './store';
 import theme from './theme';
 import AppContainer from './components/AppContainer';
 import Auth from './components/Auth';
+import Playlists from './components/Playlists';
 
 const Root = () => (
   <MuiThemeProvider theme={theme}>
     <Provider store={store}>
-      <AppContainer>
-        <Router>
+      <Router>
+        <AppContainer>
           <Switch>
+            <Route exact path="/" component={() => <h1>Home</h1>} />
             <Route path="/auth" component={Auth} />
-            <Route exact path="/" component={() => <div>Home</div>} />
+            <Route exact path="/playlists" component={Playlists} />
           </Switch>
-        </Router>
-      </AppContainer>
+        </AppContainer>
+      </Router>
     </Provider>
   </MuiThemeProvider>
 );

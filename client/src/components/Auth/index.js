@@ -11,7 +11,7 @@ const Auth = () => (
   <div className="auth">
     <img
       src={coverImage}
-      alt="" />
+      alt="cover image" />
     <div className="auth-container">
       <Switch>
         <Route exact path="/auth/login" component={Login} />
