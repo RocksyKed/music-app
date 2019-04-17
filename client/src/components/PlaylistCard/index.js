@@ -9,6 +9,9 @@ import MoreVertIcon from '@material-ui/icons/MoreVertRounded';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
+//Temporary
+import { deezerAuthPath } from '../../services/auth';
+import { DEFAULT_IMAGE_URL } from '../../helpers/constants';
 import './styles.scss';
 
 class PlaylistCard extends Component {
@@ -16,14 +19,20 @@ class PlaylistCard extends Component {
     anchorEl: null
   };
 
+  //Temporary for testing
+  redirectToDeezer = () => {
+    window.open(deezerAuthPath(), '_blank', 'height=700,width=700');
+  };
+
   render() {
     const { anchorEl } = this.state;
+    const { playlist } = this.props;
 
     return (
       <Card className="card">
         <CardHeader
-          title="Rock"
-          subheader="Public"
+          title={playlist.name}
+          subheader={playlist.isPrivate ? 'Private' : 'Public'}
           action={
             <IconButton
               onClick={({ target }) => {
@@ -44,10 +53,10 @@ class PlaylistCard extends Component {
         </Menu>
         <CardMedia
           className="card-media"
-          image="https://blog.spoongraphics.co.uk/wp-content/uploads/2017/album-art/48.jpg"
+          image={playlist.coverUrl || DEFAULT_IMAGE_URL}
           title="Album cover" />
         <CardActions disableActionSpacing>
-          <IconButton>
+          <IconButton onClick={this.redirectToDeezer}>
             <PlayIcon />
           </IconButton>
         </CardActions>

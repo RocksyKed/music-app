@@ -16,11 +16,16 @@ const addPlaylist = ({ data, userId, filename, uploadsPath }) => {
         ? playlistObj
         : {
           ...playlistObj,
-          cover: `${uploadsPath}/${playlistObj.cover}`
+          coverUrl: `${uploadsPath}/${playlistObj.cover}`
         };
     });
 };
 
+const getPlaylists = userId => {
+  return Playlist.find({ creatorId: userId }).lean();
+};
+
 module.exports = {
-  addPlaylist
+  addPlaylist,
+  getPlaylists
 };

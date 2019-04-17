@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import Typography from '@material-ui/core/Typography';
 
 import PlaylistCard from '../PlaylistCard';
 import CreatePlaylistFormDialog from '../CreatePlaylistFormDialog';
-import muiStyles from './muiStyles';
+import { getPlaylists } from '../../store/modules/playlists';
 
+import muiStyles from './muiStyles';
 import './styles.scss';
 
 class Playlists extends Component {
@@ -15,12 +19,19 @@ class Playlists extends Component {
     showModal: false
   };
 
+  componentDidMount() {
+    this.props.getPlaylists();
+  }
+
   onModalClose = () => {
     this.setState({ showModal: false })
   };
 
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      playlists
+    } = this.props;
     const { showModal } = this.state;
 
     return (
@@ -45,21 +56,43 @@ class Playlists extends Component {
           </Button>
         </div>
         <div className="playlists-container-list">
-          <PlaylistCard />
-          <PlaylistCard />
-          <PlaylistCard />
-          <PlaylistCard />
-          <PlaylistCard />
-          <PlaylistCard />
+          {
+            playlists.length
+              ? playlists.map(playlist => (
+                  <PlaylistCard
+                    key={playlist._id}
+                    playlist={playlist} />
+                ))
+              : (
+                <Typography variant="subtitle1">
+                  No playlists yet
+                </Typography>
+              )
+          }
         </div>
         <CreatePlaylistFormDialog
           open={showModal}
+          maxWidth="md"
           onClose={this.onModalClose} />
       </div>
     )
   }
 }
 
-const enhance = withStyles(muiStyles);
+const mapState = state => ({
+  playlists: state.playlists
+});
+
+const mapDispatch = {
+  getPlaylists
+};
+
+const enhance = compose(
+  connect(
+    mapState,
+    mapDispatch
+  ),
+  withStyles(muiStyles)
+);
 
 export default enhance(Playlists);

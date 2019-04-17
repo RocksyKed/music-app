@@ -8,6 +8,7 @@ import { reducer as formReducer } from 'redux-form';
 import thunk from 'redux-thunk';
 
 import me from './modules/me';
+import playlists from './modules/playlists';
 
 const composeEnhancers = (
   process.env.NODE_ENV !== 'production' &&
@@ -17,6 +18,7 @@ const composeEnhancers = (
 
 const rootReducer = combineReducers({
   me,
+  playlists,
   form: formReducer
 });
 

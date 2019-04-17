@@ -9,8 +9,10 @@ const router = Router();
 
 router.get('/users/me', authRequired, userController.getCurrentUser);
 router.post('/users', userController.registrateUser);
+router.get('/users/deezer-confirm', userController.deezerConfirm);
 
 router.post('/playlists', authRequired, upload.single('cover'), playlistController.addPlaylist);
+router.get('/playlists', authRequired, playlistController.getPlaylists);
 
 router.post('/login', userController.login);
 

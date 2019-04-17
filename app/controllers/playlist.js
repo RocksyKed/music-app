@@ -23,6 +23,26 @@ const addPlaylist = (req, res, onError) => {
     .catch(onError)
 };
 
+const getPlaylists = (req, res, onError) => {
+  playlistService.getPlaylists(req.user._id)
+    .then(playlists => {
+      const uploadPath = url.format({
+        protocol: req.protocol,
+        host: req.get('host'),
+        pathname: '/uploads'
+      });
+      const playlistData = playlists.map(
+        item => ({
+          ...item,
+          coverUrl: `${uploadPath}/${item.cover}`
+        })
+      );
+      res.json(playlistData)
+    })
+    .catch(onError)
+};
+
 module.exports = {
-  addPlaylist
+  addPlaylist,
+  getPlaylists
 };

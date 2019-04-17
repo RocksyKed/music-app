@@ -24,6 +24,7 @@ const userSchema = new Schema({
       ref: 'Playlist'
     }
   ],
+  deezerToken: String,
 }, { versionKey: false });
 
 const User = mongoose.model('User', userSchema);

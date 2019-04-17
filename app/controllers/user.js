@@ -16,8 +16,13 @@ const getCurrentUser = (req, res) => {
   res.json(req.user);
 };
 
+const deezerConfirm = (req, res, onError) => {
+  console.log(req);
+};
+
 module.exports = {
   registrateUser,
   login,
-  getCurrentUser
+  getCurrentUser,
+  deezerConfirm
 };
