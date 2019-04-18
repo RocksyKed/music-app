@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 
 import PlaylistCard from '../PlaylistCard';
 import CreatePlaylistFormDialog from '../CreatePlaylistFormDialog';
-import { getPlaylists } from '../../store/modules/playlists';
+import { getPlaylists, addPlaylist } from '../../store/modules/playlists';
 
 import muiStyles from './muiStyles';
 import './styles.scss';
@@ -25,6 +25,11 @@ class Playlists extends Component {
 
   onModalClose = () => {
     this.setState({ showModal: false })
+  };
+
+  addNewPlaylist = data => {
+    this.props.addPlaylist(data);
+    this.onModalClose();
   };
 
   render() {
@@ -73,6 +78,7 @@ class Playlists extends Component {
         <CreatePlaylistFormDialog
           open={showModal}
           maxWidth="md"
+          onSubmit={this.addNewPlaylist}
           onClose={this.onModalClose} />
       </div>
     )
@@ -80,11 +86,12 @@ class Playlists extends Component {
 }
 
 const mapState = state => ({
-  playlists: state.playlists
+  playlists: state.playlists.list
 });
 
 const mapDispatch = {
-  getPlaylists
+  getPlaylists,
+  addPlaylist
 };
 
 const enhance = compose(

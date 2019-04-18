@@ -1,7 +1,7 @@
-import { getAllPlaylists } from '../../services/playlists';
+import { getAllPlaylists, addNewPlaylist } from '../../services/playlists';
 
 const initialState = {
-  playlists: [],
+  list: [],
   isLoading: false
 };
 
@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
     case GET_PLAYLISTS_FULFILLED:
       return {
         ...state,
-        playlists: action.payload,
+        list: action.payload,
         isLoading: false
       };
     case GET_PLAYLISTS_REJECTED:
@@ -38,8 +38,8 @@ export default (state = initialState, action) => {
     case ADD_PLAYLIST_FULFILLED:
       return {
         ...state,
-        playlists: [
-          ...state.playlists,
+        list: [
+          ...state.list,
           action.payload
         ],
         isLoading: false
@@ -66,6 +66,22 @@ export const getPlaylists = () => dispatch => {
     )
     .catch(err => {
       dispatch({ type: GET_PLAYLISTS_REJECTED });
+      console.error(err);
+    })
+};
+
+export const addPlaylist = playlistData => dispatch => {
+  dispatch({ type: ADD_PLAYLIST_PENDING });
+
+  addNewPlaylist(playlistData)
+    .then(playlist =>
+      dispatch({
+        type: ADD_PLAYLIST_FULFILLED,
+        payload: playlist
+      })
+    )
+    .catch(err => {
+      dispatch({ type: ADD_PLAYLIST_REJECTED });
       console.error(err);
     })
 };

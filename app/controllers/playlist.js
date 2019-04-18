@@ -34,7 +34,12 @@ const getPlaylists = (req, res, onError) => {
       const playlistData = playlists.map(
         item => ({
           ...item,
-          coverUrl: `${uploadPath}/${item.cover}`
+          ...(
+            item.cover &&
+            {
+              coverUrl: `${uploadPath}/${item.cover}`
+            }
+          )
         })
       );
       res.json(playlistData)

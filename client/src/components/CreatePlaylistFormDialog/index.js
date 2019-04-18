@@ -20,7 +20,7 @@ const CreatePlaylistFormDialog = ({ handleSubmit, onClose, open, maxWidth }) => 
     <DialogTitle>
       Create new playlist
     </DialogTitle>
-    <form onSubmit={handleSubmit(console.log)}>
+    <form onSubmit={handleSubmit}>
       <DialogContent className="create-playlist">
         <div className="create-playlist-cover">
           <Field
