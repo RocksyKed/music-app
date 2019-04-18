@@ -1,17 +1,19 @@
-import { getCurrentUser } from '../../services/users';
+import history from '../../history';
+import { getCurrentUser, logout } from '../../services/users';
 
-const initialState = {
+const getInitialState = () => ({
   data: null,
   isLoggedIn: false,
   isLoading: false
-};
+});
 
 export const GET_CURRENT_PENDING = 'me/GET_CURRENT_PENDING';
 export const GET_CURRENT_FULFILLED = 'me/GET_CURRENT_FULFILLED';
 export const GET_CURRENT_REJECTED = 'me/GET_CURRENT_REJECTED';
 export const LOGGED_IN = 'me/LOGGED_IN';
+export const LOGGED_OUT = 'me/LOGGED_OUT';
 
-export default (state = initialState, action) => {
+export default (state = getInitialState(), action) => {
   switch (action.type) {
     case LOGGED_IN:
       return {
@@ -20,6 +22,8 @@ export default (state = initialState, action) => {
         isLoading: false,
         data: action.payload
       };
+    case LOGGED_OUT:
+      return getInitialState();
     case GET_CURRENT_PENDING:
       return {
         ...state,
@@ -37,7 +41,6 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false
       };
-
     default: return state;
   }
 };
@@ -46,6 +49,12 @@ export const loggedIn = payload => ({
   type: LOGGED_IN,
   payload
 });
+
+export const loggedOut = () => dispatch => {
+  logout();
+  history.push('/auth/login');
+  dispatch({ type: LOGGED_OUT });
+};
 
 export const getMe = () => dispatch => {
   dispatch({ type: GET_CURRENT_PENDING });

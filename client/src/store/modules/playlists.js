@@ -1,9 +1,10 @@
 import { getAllPlaylists, addNewPlaylist } from '../../services/playlists';
+import { LOGGED_OUT } from './me';
 
-const initialState = {
+const getInitialState = () => ({
   list: [],
   isLoading: false
-};
+});
 
 export const GET_PLAYLISTS_PENDING = 'playlists/GET_PLAYLISTS_PENDING';
 export const GET_PLAYLISTS_FULFILLED = 'playlists/GET_PLAYLISTS_FULFILLED';
@@ -12,7 +13,7 @@ export const ADD_PLAYLIST_PENDING  = 'playlists/ADD_PLAYLIST_PENDING';
 export const ADD_PLAYLIST_FULFILLED  = 'playlists/ADD_PLAYLIST_FULFILLED';
 export const ADD_PLAYLIST_REJECTED  = 'playlists/ADD_PLAYLIST_REJECTED';
 
-export default (state = initialState, action) => {
+export default (state = getInitialState(), action) => {
   switch (action.type) {
     case GET_PLAYLISTS_PENDING:
       return {
@@ -49,7 +50,8 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false
       };
-
+    case LOGGED_OUT:
+      return getInitialState();
     default: return state;
   }
 };
