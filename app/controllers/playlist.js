@@ -47,7 +47,14 @@ const getPlaylists = (req, res, onError) => {
     .catch(onError)
 };
 
+const deletePlaylist = (req, res, onError) => {
+  playlistService.deletePlaylist(req.params.playlistId, req.user._id)
+    .then(_ => res.status(200).send())
+    .catch(onError)
+};
+
 module.exports = {
   addPlaylist,
-  getPlaylists
+  getPlaylists,
+  deletePlaylist
 };

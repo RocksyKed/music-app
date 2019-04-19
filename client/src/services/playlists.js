@@ -15,3 +15,7 @@ export const addNewPlaylist = playlistData => {
   return axios.post(`${API_BASE_URL}/playlists`, data)
     .then(({ data }) => data);
 };
+
+export const deleteOnePlaylist = playlistId =>
+  axios.delete(`${API_BASE_URL}/playlist/${playlistId}`)
+    .then(({ data }) => data);

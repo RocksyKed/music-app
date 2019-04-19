@@ -23,7 +23,9 @@ const Sidebar = ({ className, classes }) => (
       </Typography>
     </div>
     <MenuList>
-      <NavLink exact to="/">
+      <NavLink
+        exact to="/"
+        className="sidebar-container-list-link">
         <MenuItem>
           <ListItemIcon>
             <HomeIcon />
@@ -33,7 +35,9 @@ const Sidebar = ({ className, classes }) => (
             primary="Home" />
         </MenuItem>
       </NavLink>
-      <NavLink exact to="/playlists">
+      <NavLink
+        exact to="/playlists"
+        className="sidebar-container-list-link">
         <MenuItem>
           <ListItemIcon>
             <PlaylistIcon />

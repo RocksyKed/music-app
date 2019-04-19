@@ -1,4 +1,8 @@
-import { getAllPlaylists, addNewPlaylist } from '../../services/playlists';
+import {
+  getAllPlaylists,
+  addNewPlaylist,
+  deleteOnePlaylist
+} from '../../services/playlists';
 import { LOGGED_OUT } from './me';
 
 const getInitialState = () => ({
@@ -12,6 +16,9 @@ export const GET_PLAYLISTS_REJECTED = 'playlists/GET_PLAYLISTS_REJECTED';
 export const ADD_PLAYLIST_PENDING  = 'playlists/ADD_PLAYLIST_PENDING';
 export const ADD_PLAYLIST_FULFILLED  = 'playlists/ADD_PLAYLIST_FULFILLED';
 export const ADD_PLAYLIST_REJECTED  = 'playlists/ADD_PLAYLIST_REJECTED';
+export const DELETE_PLAYLIST_PENDING = 'playlists/DELETE_PLAYLIST_PENDING';
+export const DELETE_PLAYLIST_FULFILLED = 'playlists/DELETE_PLAYLIST_FULFILLED';
+export const DELETE_PLAYLIST_REJECTED = 'playlists/DELETE_PLAYLIST_REJECTED';
 
 export default (state = getInitialState(), action) => {
   switch (action.type) {
@@ -50,6 +57,24 @@ export default (state = getInitialState(), action) => {
         ...state,
         isLoading: false
       };
+    case DELETE_PLAYLIST_PENDING:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case DELETE_PLAYLIST_FULFILLED:
+      return {
+        ...state,
+        list: state.list.filter(
+          item => item._id !== action.payload
+        ),
+        isLoading: false
+      };
+    case DELETE_PLAYLIST_REJECTED:
+      return {
+        ...state,
+        isLoading: false
+      };
     case LOGGED_OUT:
       return getInitialState();
     default: return state;
@@ -84,6 +109,22 @@ export const addPlaylist = playlistData => dispatch => {
     )
     .catch(err => {
       dispatch({ type: ADD_PLAYLIST_REJECTED });
+      console.error(err);
+    })
+};
+
+export const deletePlaylist = playlistId => dispatch => {
+  dispatch({ type: DELETE_PLAYLIST_PENDING });
+
+  deleteOnePlaylist(playlistId)
+    .then(_ =>
+      dispatch({
+        type: DELETE_PLAYLIST_FULFILLED,
+        payload: playlistId
+      })
+    )
+    .catch(err => {
+      dispatch({ type: DELETE_PLAYLIST_REJECTED });
       console.error(err);
     })
 };

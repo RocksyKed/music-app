@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -9,6 +10,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVertRounded';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import { deletePlaylist } from '../../store/modules/playlists';
 //Temporary
 import { deezerAuthPath } from '../../services/auth';
 import { DEFAULT_IMAGE_URL } from '../../helpers/constants';
@@ -26,7 +28,10 @@ class PlaylistCard extends Component {
 
   render() {
     const { anchorEl } = this.state;
-    const { playlist } = this.props;
+    const {
+      playlist,
+      deletePlaylist
+    } = this.props;
 
     return (
       <Card className="card">
@@ -47,7 +52,8 @@ class PlaylistCard extends Component {
           onClose={() => {
             this.setState({ anchorEl: null });
           }}>
-          <MenuItem>
+          <MenuItem
+            onClick={_ => deletePlaylist(playlist._id)}>
             Delete playlist
           </MenuItem>
         </Menu>
@@ -65,4 +71,13 @@ class PlaylistCard extends Component {
   }
 }
 
-export default PlaylistCard;
+const mapDispatch = {
+  deletePlaylist
+};
+
+const enhance = connect(
+  null,
+  mapDispatch
+);
+
+export default enhance(PlaylistCard);
