@@ -1,7 +1,8 @@
 import {
   getAllPlaylists,
   addNewPlaylist,
-  deleteOnePlaylist
+  deleteOnePlaylist,
+  searchAllPlaylistsOfUser
 } from '../../services/playlists';
 import { LOGGED_OUT } from './me';
 
@@ -13,12 +14,15 @@ const getInitialState = () => ({
 export const GET_PLAYLISTS_PENDING = 'playlists/GET_PLAYLISTS_PENDING';
 export const GET_PLAYLISTS_FULFILLED = 'playlists/GET_PLAYLISTS_FULFILLED';
 export const GET_PLAYLISTS_REJECTED = 'playlists/GET_PLAYLISTS_REJECTED';
-export const ADD_PLAYLIST_PENDING  = 'playlists/ADD_PLAYLIST_PENDING';
-export const ADD_PLAYLIST_FULFILLED  = 'playlists/ADD_PLAYLIST_FULFILLED';
-export const ADD_PLAYLIST_REJECTED  = 'playlists/ADD_PLAYLIST_REJECTED';
+export const ADD_PLAYLIST_PENDING = 'playlists/ADD_PLAYLIST_PENDING';
+export const ADD_PLAYLIST_FULFILLED = 'playlists/ADD_PLAYLIST_FULFILLED';
+export const ADD_PLAYLIST_REJECTED = 'playlists/ADD_PLAYLIST_REJECTED';
 export const DELETE_PLAYLIST_PENDING = 'playlists/DELETE_PLAYLIST_PENDING';
 export const DELETE_PLAYLIST_FULFILLED = 'playlists/DELETE_PLAYLIST_FULFILLED';
 export const DELETE_PLAYLIST_REJECTED = 'playlists/DELETE_PLAYLIST_REJECTED';
+export const SEARCH_USER_PLAYLISTS_PENDING = 'playlists/SEARCH_USER_PLAYLISTS_PENDING';
+export const SEARCH_USER_PLAYLISTS_FULFILLED = 'playlists/SEARCH_USER_PLAYLISTS_FULFILLED';
+export const SEARCH_USER_PLAYLISTS_REJECTED = 'playlists/SEARCH_USER_PLAYLISTS_REJECTED';
 
 export default (state = getInitialState(), action) => {
   switch (action.type) {
@@ -75,6 +79,22 @@ export default (state = getInitialState(), action) => {
         ...state,
         isLoading: false
       };
+    case SEARCH_USER_PLAYLISTS_PENDING:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case SEARCH_USER_PLAYLISTS_FULFILLED:
+      return {
+        ...state,
+        list: action.payload,
+        isLoading: false
+      };
+    case SEARCH_USER_PLAYLISTS_REJECTED:
+      return {
+        ...state,
+        isLoading: false
+      };
     case LOGGED_OUT:
       return getInitialState();
     default: return state;
@@ -125,6 +145,22 @@ export const deletePlaylist = playlistId => dispatch => {
     )
     .catch(err => {
       dispatch({ type: DELETE_PLAYLIST_REJECTED });
+      console.error(err);
+    })
+};
+
+export const searchPlaylistsOfUser = searchStr => dispatch => {
+  dispatch({ type: SEARCH_USER_PLAYLISTS_PENDING });
+
+  searchAllPlaylistsOfUser(searchStr)
+    .then(playlists =>
+      dispatch({
+        type: SEARCH_USER_PLAYLISTS_FULFILLED,
+        payload: playlists
+      })
+    )
+    .catch(err => {
+      dispatch({ type: SEARCH_USER_PLAYLISTS_REJECTED });
       console.error(err);
     })
 };

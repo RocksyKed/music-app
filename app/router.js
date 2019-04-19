@@ -14,6 +14,7 @@ router.get('/users/deezer-confirm', userController.deezerConfirm);
 router.post('/playlists', authRequired, upload.single('cover'), playlistController.addPlaylist);
 router.get('/playlists', authRequired, playlistController.getPlaylists);
 router.delete('/playlist/:playlistId', authRequired, playlistController.deletePlaylist);
+router.get('/playlists/user/search', authRequired, playlistController.searchPlaylists);
 
 router.post('/login', userController.login);
 

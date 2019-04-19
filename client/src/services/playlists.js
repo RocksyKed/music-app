@@ -19,3 +19,7 @@ export const addNewPlaylist = playlistData => {
 export const deleteOnePlaylist = playlistId =>
   axios.delete(`${API_BASE_URL}/playlist/${playlistId}`)
     .then(({ data }) => data);
+
+export const searchAllPlaylistsOfUser = searchStr =>
+  axios.get(`${API_BASE_URL}/playlists/user/search?name=${searchStr}`)
+    .then(({ data }) => data);

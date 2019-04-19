@@ -3,13 +3,16 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
 import Typography from '@material-ui/core/Typography';
 
 import PlaylistCard from '../PlaylistCard';
 import CreatePlaylistFormDialog from '../CreatePlaylistFormDialog';
-import { getPlaylists, addPlaylist } from '../../store/modules/playlists';
+import SearchInput from '../SearchInput';
+import {
+  getPlaylists,
+  addPlaylist,
+  searchPlaylistsOfUser
+} from '../../store/modules/playlists';
 
 import muiStyles from './muiStyles';
 import './styles.scss';
@@ -35,20 +38,16 @@ class Playlists extends Component {
   render() {
     const {
       classes,
-      playlists
+      playlists,
+      searchPlaylistsOfUser
     } = this.props;
     const { showModal } = this.state;
 
     return (
       <div className="playlists-container">
         <div className="playlists-container-header">
-          <div className="playlists-container-header-search">
-            <div className="playlists-container-header-search-icon">
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search..." />
-          </div>
+          <SearchInput
+            onInputChange={searchPlaylistsOfUser} />
           <Button
             classes={{ root: classes.button }}
             color="secondary"
@@ -91,7 +90,8 @@ const mapState = state => ({
 
 const mapDispatch = {
   getPlaylists,
-  addPlaylist
+  addPlaylist,
+  searchPlaylistsOfUser
 };
 
 const enhance = compose(

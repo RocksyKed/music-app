@@ -53,8 +53,33 @@ const deletePlaylist = (req, res, onError) => {
     .catch(onError)
 };
 
+const searchPlaylists = (req, res, onError) => {
+  playlistService.searchPlaylistsOfUser(req.query.name, req.user._id)
+    .then(playlistsData => {
+      const uploadPath = url.format({
+        protocol: req.protocol,
+        host: req.get('host'),
+        pathname: '/uploads'
+      });
+      const playlists = playlistsData.map(
+        item => ({
+          ...item,
+          ...(
+            item.cover &&
+            {
+              coverUrl: `${uploadPath}/${item.cover}`
+            }
+          )
+        })
+      );
+      res.json(playlists);
+    })
+    .catch(onError)
+};
+
 module.exports = {
   addPlaylist,
   getPlaylists,
-  deletePlaylist
+  deletePlaylist,
+  searchPlaylists
 };

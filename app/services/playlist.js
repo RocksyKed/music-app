@@ -46,8 +46,20 @@ const deletePlaylist = (playlistId, userId) => {
     });
 };
 
+const searchPlaylistsOfUser = (searchQuery, userId) => {
+  return Playlist
+    .find({
+      name: {
+        $regex: `^${searchQuery}`,
+        $options: 'i'
+      },
+      creatorId: userId
+    }).lean();
+};
+
 module.exports = {
   addPlaylist,
   getPlaylists,
-  deletePlaylist
+  deletePlaylist,
+  searchPlaylistsOfUser
 };

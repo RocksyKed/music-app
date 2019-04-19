@@ -1,0 +1,12 @@
+.search-input-container {
+  width: 300px;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #f7f6f6;
+
+  &-icon {
+    margin-right: 10px;
+  }
+}
